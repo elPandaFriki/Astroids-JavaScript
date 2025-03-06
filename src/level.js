@@ -1,8 +1,8 @@
-import { distBetweenPoints } from "./utils";
-import { Constants } from "./constants";
-import { Ship } from "./ship";
+import { distBetweenPoints } from "./utils.js";
+import { Constants } from "./constants.js";
+import { Ship } from "./ship.js";
 import { ctx, canvas } from "./index.js";
-import { Asteroids } from "./asteroids";
+import { Asteroids } from "./asteroids.js";
 
 export class Level {
   asteroids;

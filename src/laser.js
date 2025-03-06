@@ -1,5 +1,5 @@
-import { Constants } from "./constants";
-import { Bullet } from "./bullet";
+import { Constants } from "./constants.js";
+import { Bullet } from "./bullet.js";
 import { canvas, ctx } from "./index.js";
 
 export class Laser {

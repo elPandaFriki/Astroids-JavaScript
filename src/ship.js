@@ -1,6 +1,6 @@
-import { Constants } from "./constants";
+import { Constants } from "./constants.js";
 import { canvas, ctx } from "./index.js";
-import { Laser } from "./laser";
+import { Laser } from "./laser.js";
 
 export class Ship {
   x = 0;

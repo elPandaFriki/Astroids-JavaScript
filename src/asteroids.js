@@ -1,7 +1,7 @@
-import { Constants } from "./constants";
+import { Constants } from "./constants.js";
 import { ctx, canvas } from "./index.js";
-import { distBetweenPoints } from "./utils";
-import { Asteroid } from "./asteroid";
+import { distBetweenPoints } from "./utils.js";
+import { Asteroid } from "./asteroid.js";
 
 export class Asteroids {
   total = 0;

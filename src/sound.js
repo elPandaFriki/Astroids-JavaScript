@@ -1,4 +1,4 @@
-import { Constants } from "./constants";
+import { Constants } from "./constants.js";
 
 export class Sound {
   constructor(src, maxStreams = 1, vol = 1.0) {

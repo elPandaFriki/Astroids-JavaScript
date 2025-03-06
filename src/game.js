@@ -1,6 +1,6 @@
-import { Constants } from "./constants";
-import { MusicLibrary } from "./musicLibrary";
-import { Level } from "./level";
+import { Constants } from "./constants.js";
+import { MusicLibrary } from "./musicLibrary.js";
+import { Level } from "./level.js";
 import { ctx, canvas } from "./index.js";
 
 export class Game {

@@ -1,5 +1,5 @@
-import { Music } from "./music";
-import { Sound } from "./sound";
+import { Music } from "./music.js";
+import { Sound } from "./sound.js";
 
 export class MusicLibrary {
   fxExplode = new Sound("src/sounds/explode.m4a");
