@@ -16,10 +16,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./scripts/serve-static.js",
     "eslint": "eslint ."
   },
   "dependencies": {
     "eslint": "^9.21.0",
+    "express": "^4.21.2",
+    "mime-types": "^2.1.35",
+    "node": "^23.9.0",
     "prettier": "^3.5.3"
   }
 }
