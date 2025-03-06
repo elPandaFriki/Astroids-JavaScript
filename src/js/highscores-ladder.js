@@ -19,8 +19,12 @@ export class HighScoresLadder {
   scores = [];
 
   retrieve() {
-    const scores =
+    let scores =
       JSON.parse(localStorage.getItem(Constants.SAVE_KEY_SCORE)) || [];
+    if (!Array.isArray(scores)) {
+      scores = [];
+      localStorage.setItem(Constants.SAVE_KEY_SCORE, JSON.stringify(scores));
+    }
     if (JSON.stringify(this.scores) === JSON.stringify(scores)) {
       return false;
     }
