@@ -1,0 +1,25 @@
+{
+  "name": "astroids-javascript",
+  "version": "1.0.0",
+  "description": "You can play the game here\r https://elpandafriki.github.io/Astroids-JavaScript/",
+  "homepage": "https://github.com/elPandaFriki/Astroids-JavaScript#readme",
+  "bugs": {
+    "url": "https://github.com/elPandaFriki/Astroids-JavaScript/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elPandaFriki/Astroids-JavaScript.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint": "eslint ."
+  },
+  "dependencies": {
+    "eslint": "^9.21.0",
+    "prettier": "^3.5.3"
+  }
+}
