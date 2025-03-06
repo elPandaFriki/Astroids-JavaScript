@@ -16,14 +16,18 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./scripts/serve-static.js",
+    "start": "node ./scripts/open-browser.js && nodemon ./scripts/serve-static.js",
     "eslint": "eslint ."
   },
   "dependencies": {
+    "connect-livereload": "^0.6.1",
     "eslint": "^9.21.0",
     "express": "^4.21.2",
+    "livereload": "^0.9.3",
     "mime-types": "^2.1.35",
     "node": "^23.9.0",
+    "nodemon": "^3.1.9",
+    "open": "^10.1.0",
     "prettier": "^3.5.3"
   }
 }

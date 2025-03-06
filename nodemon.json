@@ -1,0 +1,5 @@
+{
+  "watch": ["src"],
+  "ext": "js,html,css",
+  "exec": "node scripts/serve-static.js"
+}
