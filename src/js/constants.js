@@ -27,4 +27,5 @@ export class Constants {
   static SOUND_ON = true;
   static TEXT_FADE_TIME = 2.5; // text fade time in seconds
   static TEXT_SIZE = 40; // text font height in pixels
+  static SCORE_LADDER_SIZE = 10; // number of high scores to display
 }

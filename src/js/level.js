@@ -1,7 +1,7 @@
 import { distBetweenPoints } from "./utils.js";
 import { Constants } from "./constants.js";
 import { Ship } from "./ship.js";
-import { ctx, canvas } from "./index.js";
+import { ctx, canvas } from "./canvas.js";
 import { Asteroids } from "./asteroids.js";
 
 export class Level {
@@ -77,9 +77,9 @@ export class Level {
     this.ship.explodeTime -= 1;
     // reset the ship after the explosion has finished
     if (this.ship.explodeTime === 0) {
-      this.lives -= 1;
-      if (this.lives === 0) {
-        this.gameOver();
+      this.game.lives -= 1;
+      if (this.game.lives === 0) {
+        this.game.gameOver();
         return;
       }
       this.ship = new Ship(this.musicLibrary);
@@ -88,11 +88,15 @@ export class Level {
 
   nextStage() {
     this.game.lives = Constants.GAME_LIVES;
-    this.game.score = 0;
     this.game.level.ship = new Ship(this.musicLibrary);
     // get the high score from local storage
     let scoreStr = localStorage.getItem(Constants.SAVE_KEY_SCORE);
-    this.game.scoreHigh = scoreStr == null ? 0 : parseInt(scoreStr);
+    const scoreLadder =
+      scoreStr == null || !scoreStr.includes("[") ? [] : JSON.parse(scoreStr);
+    this.game.scoreLadder = scoreLadder.sort((a, b) => b - a);
+    this.game.scoreHigh = [this.game.score, ...scoreLadder].reduce((acc, o) => {
+      return Math.max(acc, o);
+    }, 0);
     this.musicLibrary.background.setAsteroidRatio(1);
     const stage =
       this.previousLevel != null ? this.previousLevel.stage : this.stage;

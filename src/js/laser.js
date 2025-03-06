@@ -1,6 +1,6 @@
 import { Constants } from "./constants.js";
 import { Bullet } from "./bullet.js";
-import { canvas, ctx } from "./index.js";
+import { canvas, ctx } from "./canvas.js";
 
 export class Laser {
   canShoot = true;

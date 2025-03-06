@@ -1,0 +1,39 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+
+#gameCanvas {
+  width: auto;
+  height: 100%;
+  image-resolution: from-image;
+  image-rendering: auto;
+}
+
+#highscores-table {
+  border: 1px solid black;
+  height: 100%;
+  width: 20rem;
+  & > tr {
+    & > td {
+      border: 1px solid black;
+      font: small-caps 3rem dejavu sans mono;
+      display: flex;
+      height: 100%;
+      justify-content: right;
+      align-items: center;
+      text-align: right;
+      & > * {
+        margin-right: 2rem;
+      }
+    }
+  }
+}

@@ -1,16 +1,18 @@
 import { Constants } from "./constants.js";
 import { MusicLibrary } from "./musicLibrary.js";
 import { Level } from "./level.js";
-import { ctx, canvas } from "./index.js";
+import { ctx, canvas } from "./canvas.js";
 
 export class Game {
   lives;
-  score;
+  score = 0;
   scoreHigh;
   musicLibrary = new MusicLibrary();
   level = new Level(this.musicLibrary, null, this);
   text;
   textAlpha;
+  paused = false;
+  scoreLadder = [];
 
   constructor() {
     this.level = new Level(this.musicLibrary, null, this);
@@ -26,6 +28,11 @@ export class Game {
     setInterval(() => {
       this.update();
     }, 1000 / Constants.FPS);
+    this.start();
+  }
+
+  start() {
+    this.paused = false;
   }
 
   reset() {
@@ -34,8 +41,11 @@ export class Game {
 
   gameOver() {
     this.level.ship.dead = true;
-    this.text = "Game Over";
-    this.textAlpha = 1.0;
+    this.scoreLadder.push(this.score);
+    const scoreLadder = this.scoreLadder.sort((a, b) => b - a);
+    const ladder = scoreLadder.slice(0, Constants.SCORE_LADDER_SIZE);
+    localStorage.setItem(Constants.SAVE_KEY_SCORE, JSON.stringify(ladder));
+    this.pause();
   }
 
   /** @type {KeyboardEvent} */
@@ -43,25 +53,28 @@ export class Game {
     if (this.level.ship.dead) {
       return;
     }
-    switch (ev.keyCode) {
-      case 32: {
-        // space bar (shoot laser)
+    if (this.paused) {
+      return;
+    }
+    switch (ev.code) {
+      case "Space": {
+        // shoot laser
         this.level.ship.laser.shoot();
         return;
       }
-      case 37: {
-        // left arrow (rotate ship left)
+      case "ArrowLeft": {
+        // rotate ship left
         this.level.ship.rot =
           ((Constants.SHIP_TURN_SPD / 180) * Math.PI) / Constants.FPS;
         return;
       }
-      case 38: {
-        // up arrow (thrust the ship forward)
+      case "ArrowUp": {
+        // thrust the ship forward
         this.level.ship.thrusting = true;
         return;
       }
-      case 39: {
-        // right arrow (rotate ship right)
+      case "ArrowRight": {
+        // rotate ship right
         this.level.ship.rot =
           ((-Constants.SHIP_TURN_SPD / 180) * Math.PI) / Constants.FPS;
         return;
@@ -77,31 +90,58 @@ export class Game {
     if (this.level.ship.dead) {
       return;
     }
-    switch (ev.keyCode) {
-      case 32: {
-        // space bar (allow shooting again)
+    switch (ev.code) {
+      case "Escape": {
+        if (this.paused) {
+          this.start();
+          return;
+        }
+        this.pause();
+        return;
+      }
+      case "Space": {
+        // allow shooting again
         this.level.ship.laser.canShoot = true;
         return;
       }
-      case 37: {
-        // left arrow (stop rotating left)
+      case "ArrowLeft": {
+        // stop rotating left
         this.level.ship.rot = 0;
         return;
       }
-      case 38: {
-        // up arrow (stop thrusting)
+      case "ArrowUp": {
+        // stop thrusting
         this.level.ship.thrusting = false;
         return;
       }
-      case 39: {
-        // right arrow (stop rotating right)
+      case "ArrowRight": {
+        // stop rotating right
         this.level.ship.rot = 0;
         return;
       }
     }
   }
 
+  pause() {
+    this.paused = true;
+  }
+
   drawGameText() {
+    if (this.level.ship.dead) {
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "rgba(255, 255, 255, 1)";
+      ctx.font = "small-caps " + Constants.TEXT_SIZE + "px dejavu sans mono";
+      ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
+      return;
+    }
+    if (this.paused) {
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "rgba(255, 255, 255, 1)";
+      ctx.font = "small-caps " + Constants.TEXT_SIZE + "px dejavu sans mono";
+      ctx.fillText("PAUSE", canvas.width / 2, canvas.height / 2);
+    }
     if (this.textAlpha >= 0) {
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
@@ -111,11 +151,6 @@ export class Game {
       this.textAlpha -= 1.0 / Constants.TEXT_FADE_TIME / Constants.FPS;
       return;
     }
-    if (!this.level.ship.dead) {
-      return;
-    }
-    // after "game over" fades, start a new game
-    this.reset();
   }
 
   drawLives(exploding) {
@@ -156,8 +191,8 @@ export class Game {
   draw(blinkOn, exploding) {
     this.level.draw();
     this.level.asteroids.draw();
-    this.level.ship.drawThruster(blinkOn, exploding);
     this.level.ship.draw(blinkOn, exploding);
+    this.level.ship.drawThruster(blinkOn, exploding);
     this.level.ship.drawCollisionCircle();
     this.level.ship.drawCenterDot();
     this.level.ship.laser.draw();
@@ -179,10 +214,13 @@ export class Game {
   }
 
   update() {
-    const blinkOn = this.level.ship.blinkNum % 2 === 0;
+    const blinkOn = this.paused ? true : this.level.ship.blinkNum % 2 === 0;
     const exploding = this.level.ship.explodeTime > 0;
-    this.musicLibrary.background.tick();
     this.draw(blinkOn, exploding);
+    if (this.paused) {
+      return;
+    }
+    this.musicLibrary.background.tick();
     this.checkEvents(exploding);
     this.moveElements();
   }

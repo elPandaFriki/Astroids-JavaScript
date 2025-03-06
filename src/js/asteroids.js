@@ -1,5 +1,5 @@
 import { Constants } from "./constants.js";
-import { ctx, canvas } from "./index.js";
+import { ctx, canvas } from "./canvas.js";
 import { distBetweenPoints } from "./utils.js";
 import { Asteroid } from "./asteroid.js";
 
@@ -62,7 +62,6 @@ export class Asteroids {
     // check high score
     if (this.game.score > this.game.scoreHigh) {
       this.game.scoreHigh = this.game.score;
-      localStorage.setItem(Constants.SAVE_KEY_SCORE, this.game.scoreHigh);
     }
     // destroy the asteroid
     this.belt.splice(index, 1);
