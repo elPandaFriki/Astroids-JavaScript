@@ -1,2 +1,2 @@
 You can play the game here
-https://elpandafriki.github.io/Astroids-JavaScript/
+https://elpandafriki.github.io/Asteroids-JavaScript/
